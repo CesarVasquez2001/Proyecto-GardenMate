@@ -11,7 +11,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.fggc.lab03"
+        applicationId "com.fggc.garden_mate"
         minSdk 24
         targetSdk 32
         versionCode 1
@@ -103,6 +103,9 @@ dependencies {
 
     // Amplify core dependency
     implementation 'com.amplifyframework:core:1.32.0'
+
+    // Amplify auth dependency
+    implementation 'com.amplifyframework:aws-auth-cognito:2.8.7'
 
     // Amplify API and Datastore dependencies
     implementation 'com.amplifyframework:aws-api:2.8.4'
