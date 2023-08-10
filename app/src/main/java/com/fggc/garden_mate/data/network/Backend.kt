@@ -74,11 +74,7 @@ object Backend {
                 Log.i(TAG, result.toString())
                 val cognitoAuthSession = result as AWSCognitoAuthSession
                 // update UI
-                this.updateUserData(cognitoAuthSession.isSignedIn)
-                when (cognitoAuthSession.identityIdResult.type) {
-                    AuthSessionResult.Type.SUCCESS ->  Log.i(TAG, "IdentityId: " + cognitoAuthSession.identityIdResult.value)
-                    AuthSessionResult.Type.FAILURE -> Log.i(TAG, "IdentityId not present because: " + cognitoAuthSession.identityIdResult.error.toString())
-                }
+
             },
             { error -> Log.i(TAG, error.toString()) }
         )
