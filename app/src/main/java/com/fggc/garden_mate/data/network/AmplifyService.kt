@@ -5,6 +5,7 @@ import android.util.Log
 import com.amplifyframework.api.ApiCategory
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.api.graphql.GraphQLRequest
+import com.amplifyframework.api.graphql.model.ModelMutation
 import com.amplifyframework.auth.AuthUserAttributeKey
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.auth.options.AuthSignOutOptions
@@ -32,7 +33,7 @@ interface AmplifyService {
 
     fun queryTodos()
 
-    fun sendComando()
+    fun sendComando(string: String)
 }
 class AmplifyServiceImpl : AmplifyService {
     override fun configureAmplify(context: Context) {
@@ -103,8 +104,8 @@ class AmplifyServiceImpl : AmplifyService {
         )
     }
 
-    override fun sendComando() {
-        Amplify.DataStore.query(MensajeComando::class.java, Where.identifier(MensajeComando::class.java, "b00a2c25-7309-43b3-9146-368b4c63cc11"),
+    override fun sendComando(id: String) {
+        Amplify.DataStore.query(MensajeComando::class.java, Where.identifier(MensajeComando::class.java, id),
             { matches ->
                 if (matches.hasNext()) {
                     val original = matches.next()
@@ -120,8 +121,4 @@ class AmplifyServiceImpl : AmplifyService {
             { Log.e("MyAmplifyApp", "Query failed", it) }
         )
     }
-}
-
-private fun ApiCategory.mutate(update: GraphQLRequest<MensajeComando>?) {
-
 }

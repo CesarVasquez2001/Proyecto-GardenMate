@@ -92,7 +92,23 @@ class AuthViewModel : ViewModel() {
         amplifyService.queryTodos()
     }
 
-    fun sendMessage(){
-        amplifyService.sendComando()
+    fun sendMessage1(){
+        amplifyService.sendComando("b00a2c25-7309-43b3-9146-368b4c63cc11")
+    }
+
+    fun sendMessage2(){
+        amplifyService.sendComando("1f7052eb-61f2-4572-b96f-a2f5ee7b7975")
+    }
+
+    fun sendMessage3(){
+        amplifyService.sendComando("fbc0c87e-9428-47e0-b959-32cc4ada5d21")
+    }
+
+    fun sendMessage4(){
+        amplifyService.sendComando("acf19aa5-58d8-44b5-85f1-058a88a53800")
+    }
+
+    fun sendMessage5(){
+        amplifyService.sendComando("92524bf0-4ce9-451b-8909-7e84575646b7")
     }
 }

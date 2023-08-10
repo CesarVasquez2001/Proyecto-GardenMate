@@ -18,8 +18,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SessionScreen(viewModel: AuthViewModel) {
-    viewModel.queryTodos()
-    viewModel.sendMessage()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp, alignment = Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -28,6 +27,24 @@ fun SessionScreen(viewModel: AuthViewModel) {
         Text(text = "YOU HAVE LOGGED IN")
         Button(onClick = viewModel::logOut) {
             Text("Log Out")
+        }
+        Button(onClick = viewModel::queryTodos) {
+            Text("Query")
+        }
+        Button(onClick = viewModel::sendMessage1) {
+            Text("Nivel 1")
+        }
+        Button(onClick = viewModel::sendMessage2) {
+            Text("Nivel 2")
+        }
+        Button(onClick = viewModel::sendMessage3) {
+            Text("Nivel 3")
+        }
+        Button(onClick = viewModel::sendMessage4) {
+            Text("Nivel 4")
+        }
+        Button(onClick = viewModel::sendMessage5) {
+            Text("Nivel 5")
         }
     }
 }
