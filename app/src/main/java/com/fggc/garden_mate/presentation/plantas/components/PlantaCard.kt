@@ -4,17 +4,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.amplifyframework.datastore.generated.model.NoteData
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PlantaCard(
-    planta: NoteData,
     deletePlanta: () -> Unit,
     navigateToUpdatePlantaScreen: (plantaId: Int) -> Unit
 ){
@@ -28,10 +25,7 @@ fun PlantaCard(
                 bottom = 4.dp
             )
             .fillMaxWidth(),
-        elevation = 3.dp,
-        onClick = {
-            navigateToUpdatePlantaScreen(planta.id)
-        }
+        elevation = 3.dp
     ){
         Row(
             modifier = Modifier
@@ -40,8 +34,7 @@ fun PlantaCard(
             verticalAlignment = Alignment.CenterVertically
         ){
             Column() {
-                Text(planta.description)
-                Text(planta.image)
+
             }
             Spacer(
                 modifier = Modifier.weight(1f)
@@ -51,8 +44,4 @@ fun PlantaCard(
             )
         }
     }
-}
-
-fun navigateToUpdatePlantaScreen(id: String?) {
-
 }

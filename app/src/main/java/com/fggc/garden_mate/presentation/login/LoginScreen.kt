@@ -34,37 +34,31 @@ fun LoginScreen(
     val showLoginForm = rememberSaveable {
         mutableStateOf(true)
     }
-
+    if (UserData.isSignedIn.value == true)
+        navigateToLoginPlantaScreen.invoke()
     Surface(
-
         modifier = Modifier.fillMaxSize()
     ) {
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             if (showLoginForm.value) {
                 Text(text = "Iniciar Sesion")
                 UserForm(
                     isCreateAccount = false,
-                    navigateToLoginPlantaScreen = navigateToLoginPlantaScreen,
-
-                    )
-                { email,username, password ->
-                    navigateToLoginPlantaScreen
+                )
+                { email, username, password ->
                     UserData.email = email
                     UserData.username = username
                     UserData.password = password
-                    viewModel.signIn(UserData)
+                    viewModel.signIn(UserData).isCompleted
+                    navigateToLoginPlantaScreen.invoke()
                 }
-
             } else {
                 Text(text = "Crea una cuenta")
                 UserForm(
                     isCreateAccount = true,
-                    navigateToLoginPlantaScreen = navigateToLoginPlantaScreen,
                 )
                 { email, username, password ->
                     UserData.email = email
@@ -154,7 +148,6 @@ fun ConfirmCodeDialog(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserForm(
-    navigateToLoginPlantaScreen: () -> Unit,
     isCreateAccount: Boolean = false,
     onDone: (String, String, String) -> Unit = { email, username, pwd -> }
 ) {
@@ -180,7 +173,6 @@ fun UserForm(
             passwordState = password, labelId = "Contraseña", passwordVisible = passwordVisible
         )
         SubmitButton(
-            navigateToLoginPlantaScreen = navigateToLoginPlantaScreen,
             textId = if (isCreateAccount) "Crear cuenta" else "Login",
             inputValido = valido,
 
@@ -209,14 +201,13 @@ fun UserNameInput(usernameState: MutableState<String>, labelId: String = "Userna
 
 @Composable
 fun SubmitButton(
-    navigateToLoginPlantaScreen: () -> Unit,
     textId: String,
     inputValido: Boolean,
     onClic: () -> Unit
 ) {
 
     Button(
-        onClick = navigateToLoginPlantaScreen,
+        onClick = onClic,
         modifier = Modifier
             .padding(3.dp)
             .fillMaxWidth(),

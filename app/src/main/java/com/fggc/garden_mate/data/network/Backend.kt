@@ -2,6 +2,7 @@ package com.fggc.garden_mate.data.network
 
 import android.content.Context
 import android.util.Log
+import androidx.navigation.compose.rememberNavController
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.api.aws.AWSApiPlugin
 import com.amplifyframework.auth.AuthChannelEventName
@@ -13,19 +14,11 @@ import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.auth.result.AuthSessionResult
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.core.InitializationStatus
-import com.amplifyframework.core.model.query.Where
-import com.amplifyframework.core.model.temporal.Temporal
 import com.amplifyframework.datastore.AWSDataStorePlugin
-import com.amplifyframework.datastore.DataStoreException
-import com.amplifyframework.datastore.DataStoreItemChange
-import com.amplifyframework.datastore.generated.model.Priority
-import com.amplifyframework.datastore.generated.model.Todo
+import com.amplifyframework.datastore.generated.model.Sensor
 import com.amplifyframework.hub.HubChannel
 import com.amplifyframework.hub.HubEvent
 import com.fggc.garden_mate.domain.model.UserData
-import java.util.Date
-import java.util.TimeZone
-import java.util.concurrent.TimeUnit
 
 
 object Backend {
@@ -61,6 +54,7 @@ object Backend {
                         AuthChannelEventName.SIGNED_IN -> {
                             updateUserData(true)
                             Log.i(TAG, "HUB : SIGNED_IN")
+
                         }
                         AuthChannelEventName.SIGNED_OUT -> {
                             updateUserData(false)
@@ -167,81 +161,81 @@ object Backend {
         )
     }
 
-    fun createTodo(){
-        val item = Todo.builder()
-            .name("Build Android application")
-            .priority(Priority.NORMAL)
-            .build()
+//    fun createTodo(){
+//        val item = Sensor.builder()
+//            .name("Build Android application")
+//            .priority(Priority.NORMAL)
+//            .build()
+//
+//        Amplify.DataStore.save(item,
+//            { Log.i("Tutorial", "Saved item: ${item.name}") },
+//            { Log.e("Tutorial", "Could not save item to DataStore", it) }
+//        )
+//    }
 
-        Amplify.DataStore.save(item,
-            { Log.i("Tutorial", "Saved item: ${item.name}") },
-            { Log.e("Tutorial", "Could not save item to DataStore", it) }
-        )
-    }
+//    fun createTodo2(){
+//        val date = Date()
+//        val offsetMillis = TimeZone.getDefault().getOffset(date.time).toLong()
+//        val offsetSeconds = TimeUnit.MILLISECONDS.toSeconds(offsetMillis).toInt()
+//        val temporalDateTime = Temporal.DateTime(date, offsetSeconds)
+//        val item = Todo.builder()
+//            .name("Finish quarterly taxes")
+//            .priority(Priority.HIGH)
+//            .completedAt(temporalDateTime)
+//            .build()
+//
+//        Amplify.DataStore.save(item,
+//            { Log.i("Tutorial", "Saved item: ${item.name}") },
+//            { Log.e("Tutorial", "Could not save item to DataStore", it) }
+//        )
+//    }
 
-    fun createTodo2(){
-        val date = Date()
-        val offsetMillis = TimeZone.getDefault().getOffset(date.time).toLong()
-        val offsetSeconds = TimeUnit.MILLISECONDS.toSeconds(offsetMillis).toInt()
-        val temporalDateTime = Temporal.DateTime(date, offsetSeconds)
-        val item = Todo.builder()
-            .name("Finish quarterly taxes")
-            .priority(Priority.HIGH)
-            .completedAt(temporalDateTime)
-            .build()
-
-        Amplify.DataStore.save(item,
-            { Log.i("Tutorial", "Saved item: ${item.name}") },
-            { Log.e("Tutorial", "Could not save item to DataStore", it) }
-        )
-    }
-
-    fun queryTodos(){
-        Amplify.DataStore.query(Todo::class.java,
-            { todos ->
-                while (todos.hasNext()) {
-                    val todo: Todo = todos.next()
-                    Log.i("Tutorial", "==== Todo ====")
-                    Log.i("Tutorial", "Name: ${todo.name}")
-                    todo.priority?.let { todoPriority -> Log.i("Tutorial", "Priority: $todoPriority") }
-                    todo.completedAt?.let { todoCompletedAt -> Log.i("Tutorial", "CompletedAt: $todoCompletedAt") }
+    fun queryTodos() {
+        Amplify.DataStore.query(Sensor::class.java,
+            { sensors ->
+                while (sensors.hasNext()) {
+                    val sensor: Sensor = sensors.next()
+                    Log.i("DataStore", "==== Sensor ====")
+                    Log.i("DataStore", "Name: ${sensor.id}")
+                    sensor.humidity?.let { todoPriority -> Log.i("Tutorial", "Priority: $todoPriority") }
+                    sensor.temperature?.let { todoCompletedAt -> Log.i("Tutorial", "CompletedAt: $todoCompletedAt") }
                 }
             },
             { Log.e("Tutorial", "Could not query DataStore", it)  }
         )
     }
 
-    fun updateTodos(){
-        Amplify.DataStore.query(Todo::class.java, Where.matches(Todo.NAME.eq("Finish quarterly taxes")),
-            { matches ->
-                if (matches.hasNext()) {
-                    val todo = matches.next()
-                    val updatedTodo = todo.copyOfBuilder()
-                        .name("File quarterly taxes")
-                        .build()
-                    Amplify.DataStore.save(updatedTodo,
-                        { Log.i("Tutorial", "Updated item: ${updatedTodo.name}") },
-                        { Log.e("Tutorial", "Update failed.", it) }
-                    )
-                }
-            },
-            { Log.e("Tutorial", "Query failed", it) }
-        )
-    }
-
-    fun deleteTodo(){
-        Amplify.DataStore.query(Todo::class.java, Where.matches(Todo.NAME.eq("File quarterly taxes")),
-            { matches ->
-                if (matches.hasNext()) {
-                    val toDeleteTodo = matches.next()
-                    Amplify.DataStore.delete(toDeleteTodo,
-                        { Log.i("Tutorial", "Deleted item: ${toDeleteTodo.name}") },
-                        { Log.e("Tutorial", "Delete failed.", it) }
-                    )
-                }
-            },
-            { Log.e("Tutorial", "Query failed.", it) }
-        )
-    }
+//    fun updateTodos(){
+//        Amplify.DataStore.query(Todo::class.java, Where.matches(Todo.NAME.eq("Finish quarterly taxes")),
+//            { matches ->
+//                if (matches.hasNext()) {
+//                    val todo = matches.next()
+//                    val updatedTodo = todo.copyOfBuilder()
+//                        .name("File quarterly taxes")
+//                        .build()
+//                    Amplify.DataStore.save(updatedTodo,
+//                        { Log.i("Tutorial", "Updated item: ${updatedTodo.name}") },
+//                        { Log.e("Tutorial", "Update failed.", it) }
+//                    )
+//                }
+//            },
+//            { Log.e("Tutorial", "Query failed", it) }
+//        )
+//    }
+//
+//    fun deleteTodo(){
+//        Amplify.DataStore.query(Todo::class.java, Where.matches(Todo.NAME.eq("File quarterly taxes")),
+//            { matches ->
+//                if (matches.hasNext()) {
+//                    val toDeleteTodo = matches.next()
+//                    Amplify.DataStore.delete(toDeleteTodo,
+//                        { Log.i("Tutorial", "Deleted item: ${toDeleteTodo.name}") },
+//                        { Log.e("Tutorial", "Delete failed.", it) }
+//                    )
+//                }
+//            },
+//            { Log.e("Tutorial", "Query failed.", it) }
+//        )
+//    }
 
 }

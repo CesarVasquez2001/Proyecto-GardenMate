@@ -14,29 +14,33 @@ class
 PlantasViewModel  (
     private val backend: Backend
 ) : ViewModel() {
-
+    val sensores = backend.queryTodos()
 
     var openDialog by mutableStateOf(false)
 
-    fun createTodo(){
-        backend.createTodo()
-    }
+//    fun createTodo(){
+//        backend.createTodo()
+//    }
+//
+//    fun createTodo2(){
+//        backend.createTodo2()
+//    }
 
-    fun createTodo2(){
-        backend.createTodo2()
+    fun singOut(){
+        backend.signOut()
     }
 
     fun queryTodos(){
         backend.queryTodos()
     }
 
-    fun updateTodo(){
-        backend.updateTodos()
-    }
-
-    fun deleteTodo(){
-        backend.deleteTodo()
-    }
+//    fun updateTodo(){
+//        backend.updateTodos()
+//    }
+//
+//    fun deleteTodo(){
+//        backend.deleteTodo()
+//    }
 
 
     fun closeDialog() {

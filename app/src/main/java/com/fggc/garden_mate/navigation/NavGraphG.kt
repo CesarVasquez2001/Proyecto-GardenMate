@@ -58,12 +58,11 @@ fun NavGraph(
         composable(
             route = "${PlantasScreen.route}",
         ) { backStackEntry ->
-            val loginId = backStackEntry.arguments?.getInt("loginId") ?: 0
             PlantasScreen(
                 viewModel = PlantasViewModel(backend = Backend),
-                navigateToUpdatePlantaScreen = { plantaId ->
+                navigateToUpdatePlantaScreen = {
                     navController.navigate(
-                        "${UpdatePlantasScreen.route}/${plantaId}"
+                        "${LoginScreen.route}"
                     )
                 }
             )
